@@ -1,5 +1,10 @@
 # 智回 · 电商自动回复工作台
 
+[![release](https://img.shields.io/badge/release-v1.0.0-4F46E5)](https://github.com/355744444-source/ecom-autoreply/releases/latest)
+[![platform](https://img.shields.io/badge/Windows-10%20%2F%2011%20x64-0078D4)](#快速开始)
+[![python](https://img.shields.io/badge/Python-3.9%2B-3776AB)](https://www.python.org/)
+[![deps](https://img.shields.io/badge/dependencies-0-12B76A)](#设计说明)
+
 面向中国电商多平台店铺的本地自动回复工具，覆盖 **拼多多 / 天猫 / 淘宝 / 京东 / 抖音**。
 核心是「关键词规则引擎 + 自定义话术 + 人工接管」，全部数据保存在本机 SQLite，不上传云端。
 
@@ -9,9 +14,9 @@
 
 ## 快速开始
 
-**方式一（推荐，零依赖）**：双击 `dist\智回.exe`
+**方式一（推荐，零依赖）**：从 [Releases](https://github.com/355744444-source/ecom-autoreply/releases/latest) 下载 `ZhiHui-v1.0.0-Windows-x64.exe`，双击运行
 
-单文件 15 MB，内置 Python 运行时与全部前端资源，**目标电脑不需要装 Python**。
+单文件 14.3 MB，内置 Python 运行时与全部前端资源，**目标电脑不需要装 Python**。
 双击后弹出控制窗口 → 自动打开浏览器 → 页面即可用；关闭窗口即停止服务。
 
 ![控制窗口](docs/ui_window.png)
@@ -107,7 +112,7 @@ python app.py --port 9000     # 指定端口
 
 ```
 ecom-autoreply/
-├─ dist/智回.exe        ★ 单文件成品，直接双击运行
+├─ dist/智回.exe       构建产物（不入库；可直接下 Releases 或按下方命令构建）
 ├─ app.py              启动入口（选端口 + 控制窗口 + 打开浏览器）
 ├─ server.py           HTTP 服务与 REST API（仅标准库）
 ├─ engine.py           规则引擎：匹配、优先级、时段、变量、敏感词
@@ -118,7 +123,7 @@ ecom-autoreply/
 ├─ version_info.txt    exe 版本资源（公司名、产品名、版本号）
 ├─ assets/             应用图标 + 图标生成脚本
 ├─ 启动.bat            源码方式双击启动
-├─ data/app.db         全部业务数据（备份这个文件即可）
+├─ data/app.db         本地业务数据（首次运行自动生成，不入库）
 └─ web/
    ├─ index.html       单页应用骨架
    ├─ css/app.css      设计系统与全部样式
@@ -128,8 +133,8 @@ ecom-autoreply/
 ## 数据存储
 
 - 全部数据在 `data/app.db`（SQLite），**删除即恢复出厂演示数据**。
-- **exe 版的数据目录在 exe 同级**：`dist\data\app.db`。控制窗口上点「数据目录」可直接打开。
-- 分发时只需给一个 `智回.exe`，首次运行会自动创建 `data\` 并写入演示数据。
+- **exe 版的数据目录在 exe 同级**：`<exe 所在目录>\data\app.db`。控制窗口上点「数据目录」可直接打开。
+- 分发时只需给一个 exe，首次运行会自动创建 `data\` 并写入演示数据。
 - 迁移/备份：直接复制 `app.db`（连同 `-wal`、`-shm` 文件一起复制更稳妥）。
 - 「系统设置 → 重置演示数据」只清会话与消息；「清空运行日志」只清日志。
 
