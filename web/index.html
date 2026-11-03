@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智回 · 电商自动回复工作台</title>
+<link rel="stylesheet" href="css/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%234F46E5'/><text y='68' x='50' font-size='54' text-anchor='middle' fill='white' font-family='sans-serif'>回</text></svg>">
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true">
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 14.5a2 2 0 0 1-2 2H7.5L3 21V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 8h8M8 11.5h5"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M10 2v7L4.6 18.3A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.7-2.7L14 9V2"/><path d="M8.5 2h7M7.2 15h9.6"/></symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-4"/><path d="M9 8V2M15 8V2"/><path d="M18 8v5a6 6 0 0 1-12 0V8z"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V6"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M21.5 2.5L10.8 13.2"/><path d="M21.5 2.5l-6.8 19.3-4-9.3-9.2-4z"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 4v6h-6"/><path d="M3 20v-6h6"/><path d="M4.6 9.5A8 8 0 0 1 18.9 6L21 10"/><path d="M19.4 14.5A8 8 0 0 1 5.1 18L3 14"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.2 2"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-3.8 8-10V5.2L12 2 4 5.2V12c0 6.2 8 10 8 10z"/><path d="M9 12l2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+  <symbol id="i-bot" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M12 4v4M8 13v2M16 13v2M2 14h1M21 14h1"/><circle cx="12" cy="2.5" r="1.4"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2.5l1.9 4.9 4.9 1.9-4.9 1.9L12 16.1l-1.9-4.9L5.2 9.3l4.9-1.9z"/><path d="M18.5 16l.9 2.2 2.1.8-2.1.8-.9 2.2-.9-2.2-2.1-.8 2.1-.8z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.5L1.9 18a2 2 0 0 0 1.7 3h16.8a2 2 0 0 0 1.7-3L13.7 3.5a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 4.5h13l3.5 7.5v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 4v16M16 4v16"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></symbol>
+</svg>
+
+<div class="app">
+  <!-- ───────────────── 侧边栏 ───────────────── -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">回</div>
+      <div class="brand-text">
+        <strong>智回</strong>
+        <span>电商自动回复</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <div class="nav-label">概览</div>
+      <a class="nav-item is-active" data-view="dashboard">
+        <svg class="ico"><use href="#i-grid"/></svg><span>工作台</span>
+      </a>
+
+      <div class="nav-label">客服运营</div>
+      <a class="nav-item" data-view="sessions">
+        <svg class="ico"><use href="#i-chat"/></svg><span>会话中心</span>
+        <em class="nav-badge" id="navUnread">0</em>
+      </a>
+      <a class="nav-item" data-view="rules">
+        <svg class="ico"><use href="#i-filter"/></svg><span>自动回复规则</span>
+      </a>
+      <a class="nav-item" data-view="templates">
+        <svg class="ico"><use href="#i-book"/></svg><span>话术库</span>
+      </a>
+      <a class="nav-item" data-view="tester">
+        <svg class="ico"><use href="#i-flask"/></svg><span>规则测试器</span>
+      </a>
+
+      <div class="nav-label">接入与运维</div>
+      <a class="nav-item" data-view="platforms">
+        <svg class="ico"><use href="#i-plug"/></svg><span>平台接入</span>
+      </a>
+      <a class="nav-item" data-view="logs">
+        <svg class="ico"><use href="#i-log"/></svg><span>运行日志</span>
+      </a>
+      <a class="nav-item" data-view="settings">
+        <svg class="ico"><use href="#i-settings"/></svg><span>系统设置</span>
+      </a>
+    </nav>
+
+    <div class="side-foot">
+      <div class="shop-card">
+        <div class="shop-top">
+          <span class="shop-dot" id="sideDot"></span>
+          <span class="shop-name" id="sideShop">振远优选旗舰店</span>
+        </div>
+        <div class="shop-sub">自动回复 <b id="sideState">运行中</b></div>
+        <button class="mini-switch" id="sideSwitch" title="全局开关">
+          <span class="mini-track"><i></i></span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ───────────────── 主区 ───────────────── -->
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1 id="pageTitle">工作台</h1>
+        <p id="pageSub">今日自动回复概览与实时动态</p>
+      </div>
+      <div class="topbar-actions">
+        <span class="live-pill" id="livePill"><i></i>实时监听中</span>
+        <button class="btn btn-ghost" id="btnSimulate">
+          <svg class="ico"><use href="#i-spark"/></svg>模拟买家咨询
+        </button>
+        <button class="btn btn-primary" id="btnNewRuleTop">
+          <svg class="ico"><use href="#i-plus"/></svg>新建规则
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- ══════════ 工作台 ══════════ -->
+      <section class="view is-active" data-view="dashboard">
+        <div class="kpi-grid" id="kpiGrid"></div>
+
+        <div class="grid-2-1">
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h3>近 7 日接待与自动回复</h3>
+                <p>买家消息量 vs 自动回复量</p>
+              </div>
+              <div class="legend">
+                <span><i class="lg lg-buyer"></i>买家消息</span>
+                <span><i class="lg lg-auto"></i>自动回复</span>
+              </div>
+            </div>
+            <div class="chart" id="trendChart"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><h3>平台状态</h3><p>今日会话分布</p></div>
+            </div>
+            <div class="plat-list" id="platList"></div>
+          </div>
+        </div>
+
+        <div class="grid-1-1">
+          <div class="card">
+            <div class="card-head">
+              <div><h3>规则命中排行</h3><p>累计命中次数</p></div>
+              <a class="link" data-jump="rules">管理规则<svg class="ico"><use href="#i-chevron"/></svg></a>
+            </div>
+            <div class="rank-list" id="rankList"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><h3>实时动态</h3><p>最近 8 条自动回复</p></div>
+              <a class="link" data-jump="logs">全部日志<svg class="ico"><use href="#i-chevron"/></svg></a>
+            </div>
+            <div class="feed" id="liveFeed"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ 会话中心 ══════════ -->
+      <section class="view" data-view="sessions">
+        <div class="chat-shell">
+          <div class="chat-list-col">
+            <div class="chat-list-head">
+              <div class="search sm">
+                <svg class="ico"><use href="#i-search"/></svg>
+                <input id="sessSearch" placeholder="搜索买家 / 商品">
+              </div>
+              <div class="chip-row" id="sessFilter">
+                <button class="chip is-on" data-f="all">全部</button>
+                <button class="chip" data-f="unread">未读</button>
+                <button class="chip" data-f="human">人工</button>
+                <button class="chip" data-f="auto">自动</button>
+              </div>
+            </div>
+            <div class="sess-list" id="sessList"></div>
+          </div>
+
+          <div class="chat-main" id="chatMain">
+            <div class="chat-empty">
+              <svg class="ico"><use href="#i-chat"/></svg>
+              <p>选择左侧会话开始接待</p>
+            </div>
+          </div>
+
+          <div class="chat-side" id="chatSide"></div>
+        </div>
+      </section>
+
+      <!-- ══════════ 规则管理 ══════════ -->
+      <section class="view" data-view="rules">
+        <div class="card">
+          <div class="toolbar">
+            <div class="search">
+              <svg class="ico"><use href="#i-search"/></svg>
+              <input id="ruleSearch" placeholder="搜索规则名 / 关键词">
+            </div>
+            <div class="chip-row" id="rulePlatFilter"></div>
+            <div class="spacer"></div>
+            <button class="btn btn-ghost" id="btnRuleTest">
+              <svg class="ico"><use href="#i-flask"/></svg>测试规则
+            </button>
+            <button class="btn btn-primary" id="btnNewRule">
+              <svg class="ico"><use href="#i-plus"/></svg>新建规则
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table class="table" id="ruleTable">
+              <thead>
+                <tr>
+                  <th style="width:64px">优先级</th>
+                  <th>规则名称</th>
+                  <th>匹配方式</th>
+                  <th>关键词</th>
+                  <th style="width:120px">适用平台</th>
+                  <th style="width:110px">生效时段</th>
+                  <th style="width:80px">命中</th>
+                  <th style="width:64px">启用</th>
+                  <th style="width:96px"></th>
+                </tr>
+              </thead>
+              <tbody id="ruleBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ 话术库 ══════════ -->
+      <section class="view" data-view="templates">
+        <div class="toolbar">
+          <div class="search">
+            <svg class="ico"><use href="#i-search"/></svg>
+            <input id="tplSearch" placeholder="搜索话术标题 / 内容">
+          </div>
+          <div class="chip-row" id="tplCats"></div>
+          <div class="spacer"></div>
+          <button class="btn btn-primary" id="btnNewTpl">
+            <svg class="ico"><use href="#i-plus"/></svg>新建话术
+          </button>
+        </div>
+        <div class="tpl-grid" id="tplGrid"></div>
+      </section>
+
+      <!-- ══════════ 规则测试器 ══════════ -->
+      <section class="view" data-view="tester">
+        <div class="tester-grid">
+          <div class="card tester-input">
+            <div class="card-head"><div><h3>模拟买家消息</h3><p>输入一句话，立刻看到命中结果</p></div></div>
+            <label class="field">
+              <span class="field-label">咨询平台</span>
+              <select class="select" id="testPlatform"></select>
+            </label>
+            <label class="field">
+              <span class="field-label">买家原话</span>
+              <textarea class="textarea" id="testText" rows="4" placeholder="例如：我的快递到哪了，都三天了"></textarea>
+            </label>
+            <div class="chip-row wrap" id="testSamples"></div>
+            <button class="btn btn-primary block" id="btnRunTest">
+              <svg class="ico"><use href="#i-play"/></svg>开始测试
+            </button>
+            <div class="hint-box">
+              <svg class="ico"><use href="#i-spark"/></svg>
+              <span>测试不会真正发送消息，仅按当前规则排序计算命中结果。</span>
+            </div>
+          </div>
+
+          <div class="card tester-output">
+            <div class="card-head"><div><h3>匹配结果</h3><p>含变量渲染与敏感词检查</p></div></div>
+            <div id="testResult" class="test-result">
+              <div class="empty sm">
+                <svg class="ico"><use href="#i-target"/></svg>
+                <p>还没有测试结果</p>
+              </div>
+            </div>
+            <div class="pipeline" id="pipeline"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ 平台接入 ══════════ -->
+      <section class="view" data-view="platforms">
+        <div class="notice">
+          <svg class="ico"><use href="#i-shield"/></svg>
+          <div>
+            <strong>接入前提</strong>
+            <p>五个平台均需使用<strong>官方开放平台</strong>的客服消息能力（商家授权 + 应用审核）。本工具不模拟客户端、不注入进程，避免账号风控。未配置密钥时可先用「演示模式」跑通全部规则。</p>
+          </div>
+        </div>
+        <div class="plat-grid" id="platGrid"></div>
+      </section>
+
+      <!-- ══════════ 运行日志 ══════════ -->
+      <section class="view" data-view="logs">
+        <div class="card">
+          <div class="toolbar">
+            <div class="search">
+              <svg class="ico"><use href="#i-search"/></svg>
+              <input id="logSearch" placeholder="搜索问题 / 回复 / 买家">
+            </div>
+            <select class="select sm" id="logPlatform"><option value="">全部平台</option></select>
+            <select class="select sm" id="logMode">
+              <option value="">全部状态</option>
+              <option value="auto">自动回复</option>
+              <option value="no_match">未命中</option>
+              <option value="blocked">敏感词拦截</option>
+            </select>
+            <div class="spacer"></div>
+            <button class="btn btn-ghost" id="btnExport">
+              <svg class="ico"><use href="#i-download"/></svg>导出 CSV
+            </button>
+            <button class="btn btn-ghost danger" id="btnClearLogs">
+              <svg class="ico"><use href="#i-trash"/></svg>清空
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:150px">时间</th>
+                  <th style="width:90px">平台</th>
+                  <th style="width:110px">买家</th>
+                  <th>买家问题</th>
+                  <th style="width:130px">命中规则</th>
+                  <th style="width:94px">状态</th>
+                  <th style="width:76px">耗时</th>
+                </tr>
+              </thead>
+              <tbody id="logBody"></tbody>
+            </table>
+          </div>
+          <div class="pager" id="logPager"></div>
+        </div>
+      </section>
+
+      <!-- ══════════ 设置 ══════════ -->
+      <section class="view" data-view="settings">
+        <div class="settings-grid">
+          <div class="card">
+            <div class="card-head"><div><h3>运行控制</h3><p>决定自动回复是否生效</p></div></div>
+            <div class="setting-row">
+              <div><strong>自动回复总开关</strong><p>关闭后所有平台仅记录消息，不发送回复</p></div>
+              <label class="switch"><input type="checkbox" id="setGlobal"><span></span></label>
+            </div>
+            <div class="setting-row">
+              <div><strong>兜底回复</strong><p>没有命中任何规则时，用兜底话术回应</p></div>
+              <label class="switch"><input type="checkbox" id="setFallback"><span></span></label>
+            </div>
+            <div class="setting-row">
+              <div><strong>工作时段</strong><p>时段外按夜间策略处理</p></div>
+              <div class="inline-inputs">
+                <input class="input sm" id="setHoursStart" placeholder="08:00">
+                <span>至</span>
+                <input class="input sm" id="setHoursEnd" placeholder="23:00">
+              </div>
+            </div>
+            <div class="setting-row">
+              <div><strong>夜间继续回复</strong><p>关闭后非工作时段不自动回复</p></div>
+              <label class="switch"><input type="checkbox" id="setNight"><span></span></label>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><div><h3>发送策略</h3><p>防止回复过快触发平台风控</p></div></div>
+            <div class="setting-row">
+              <div><strong>回复延迟（秒）</strong><p>模拟真人打字间隔，随机取值</p></div>
+              <div class="inline-inputs">
+                <input class="input sm" id="setDelayMin" type="number" min="0" max="10">
+                <span>至</span>
+                <input class="input sm" id="setDelayMax" type="number" min="0" max="10">
+              </div>
+            </div>
+            <div class="setting-row">
+              <div><strong>每分钟最多回复</strong><p>超出后排队，避免触发限流</p></div>
+              <input class="input sm num" id="setPerMinute" type="number" min="1" max="120">
+            </div>
+            <div class="setting-row">
+              <div><strong>同一会话冷却（秒）</strong><p>同一买家连续消息不重复轰炸</p></div>
+              <input class="input sm num" id="setCooldown" type="number" min="0" max="600">
+            </div>
+            <div class="setting-row">
+              <div><strong>人工接管静默（分钟）</strong><p>人工回复后自动回复暂停时长</p></div>
+              <input class="input sm num" id="setTakeover" type="number" min="1" max="120">
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><div><h3>内容与安全</h3><p>敏感词命中将拦截发送</p></div></div>
+            <label class="field">
+              <span class="field-label">敏感词（逗号分隔）</span>
+              <textarea class="textarea" id="setSensitive" rows="3" placeholder="差评, 投诉, 假货"></textarea>
+              <span class="field-hint">自动回复中出现这些词将被拦截并记录到日志</span>
+            </label>
+            <div class="setting-row">
+              <div><strong>追加签名</strong><p>在每条自动回复末尾追加客服签名</p></div>
+              <label class="switch"><input type="checkbox" id="setSignatureOn"><span></span></label>
+            </div>
+            <label class="field">
+              <span class="field-label">签名内容</span>
+              <input class="input" id="setSignature" placeholder="—— {店铺}客服 {客服名} 为您服务">
+            </label>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><div><h3>店铺信息</h3><p>用于填充 {店铺} 等变量</p></div></div>
+            <label class="field">
+              <span class="field-label">店铺名称</span>
+              <input class="input" id="setShop">
+            </label>
+            <label class="field">
+              <span class="field-label">客服昵称</span>
+              <input class="input" id="setAgent">
+            </label>
+            <div class="divider"></div>
+            <div class="setting-row">
+              <div><strong>清空运行日志</strong><p>仅删除日志，不影响规则与会话</p></div>
+              <button class="btn btn-ghost danger sm" id="btnWipe">清空</button>
+            </div>
+            <div class="setting-row">
+              <div><strong>重置演示数据</strong><p>清空全部会话与消息，模拟器会重新生成</p></div>
+              <button class="btn btn-ghost danger sm" id="btnReset">重置</button>
+            </div>
+          </div>
+        </div>
+        <div class="save-bar">
+          <span id="saveHint">修改后请点击保存</span>
+          <button class="btn btn-primary" id="btnSaveSettings">
+            <svg class="ico"><use href="#i-check"/></svg>保存设置
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- 抽屉：规则编辑 -->
+<div class="drawer-mask" id="drawerMask"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div>
+      <h3 id="drawerTitle">新建规则</h3>
+      <p id="drawerSub">关键词命中后自动回复买家</p>
+    </div>
+    <button class="icon-btn" id="drawerClose"><svg class="ico"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot">
+    <button class="btn btn-ghost" id="drawerCancel">取消</button>
+    <button class="btn btn-primary" id="drawerSave">
+      <svg class="ico"><use href="#i-check"/></svg>保存规则
+    </button>
+  </div>
+</aside>
+
+<!-- 模态框 -->
+<div class="modal-mask" id="modalMask">
+  <div class="modal" id="modal"></div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

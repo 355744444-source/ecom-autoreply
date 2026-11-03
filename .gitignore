@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+venv_pyi/
+env/
+
+# PyInstaller 构建产物
+build/
+dist/
+*.manifest
+
+# 运行时数据（SQLite 主库与 WAL，含演示会话，不入库）
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# 日志与临时文件
+*.log
+*.tmp
+*.bak
+.wr_probe_*
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
